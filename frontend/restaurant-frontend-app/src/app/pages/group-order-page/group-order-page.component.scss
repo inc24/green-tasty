@@ -16,6 +16,19 @@
   border-bottom: 1px solid color.$green-150;
 }
 
+.screen-state {
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  padding: 3rem 1rem;
+  color: color.$neutral-700;
+  text-align: center;
+}
+
+.error-state {
+  color: color.$red-400;
+}
+
 .title-row {
   display: flex;
   flex-wrap: wrap;
@@ -36,6 +49,11 @@ h1 {
   background: color.$neutral-200;
   color: color.$neutral-700;
   font-size: 0.75rem;
+}
+
+.status-badge.submitted {
+  background: color.$green-100;
+  color: color.$green-800;
 }
 
 .metadata {
@@ -100,6 +118,42 @@ h1 {
   list-style: none;
 }
 
+.empty-state {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 0.6rem;
+  background: color.$neutral-0;
+  color: color.$neutral-600;
+  text-align: center;
+}
+
+.consolidated-order {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border-radius: 0.85rem;
+  background: color.$neutral-0;
+}
+
+.consolidated-order h2 {
+  margin-bottom: 0.75rem;
+  color: color.$neutral-900;
+  font-size: 1.125rem;
+}
+
+.consolidated-items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.consolidated-items li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid color.$neutral-100;
+}
+
 .order-summary {
   margin-top: 0.5rem;
   padding-top: 1rem;
@@ -129,6 +183,29 @@ h1 {
   color: color.$neutral-0;
   font: inherit;
   font-weight: 600;
+}
+
+.submit-button:disabled {
+  background: color.$neutral-400;
+  cursor: not-allowed;
+}
+
+.secondary-button {
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid color.$neutral-200;
+  border-radius: 0.5rem;
+  background: color.$neutral-0;
+  color: color.$neutral-900;
+  font: inherit;
+}
+
+[modal-actions] {
+  width: 100%;
+}
+
+[modal-actions] .submit-button {
+  flex: 1;
 }
 
 @media (max-width: 640px) {

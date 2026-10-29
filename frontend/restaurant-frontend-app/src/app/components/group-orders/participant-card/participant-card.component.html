@@ -8,20 +8,24 @@
         <span class="chip pending">Still choosing</span>
       }
     </div>
-    <span class="text-action">
-      {{ participant().type === 'Owner' ? 'Edit my Pre-Order' : 'Remove Guest' }}
-    </span>
+    @if (!isReadOnly()) {
+      <span class="text-action">
+        {{ participant().type === 'Owner' ? 'Edit my Pre-Order' : 'Remove Guest' }}
+      </span>
+    }
   </header>
 
   @if (participant().items.length) {
     <ul class="items">
       @for (item of participant().items; track item.dish.id) {
         <li class="item">
-          <span class="remove-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14M9 7V4h6v3" />
-            </svg>
-          </span>
+          @if (!isReadOnly()) {
+            <span class="remove-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7h16M10 11v6M14 11v6M5 7l1 14h12l1-14M9 7V4h6v3" />
+              </svg>
+            </span>
+          }
           @if (item.dish.imageUrl) {
             <img
               class="avatar"
@@ -42,11 +46,15 @@
               <p class="weight">{{ item.dish.weight }}</p>
             }
           </div>
-          <span class="quantity-control" aria-hidden="true">
-            <span class="quantity-button">−</span>
-            <span>{{ item.quantity }}</span>
-            <span class="quantity-button add">+</span>
-          </span>
+          @if (isReadOnly()) {
+            <span class="quantity">{{ item.quantity }}</span>
+          } @else {
+            <span class="quantity-control" aria-hidden="true">
+              <span class="quantity-button">−</span>
+              <span>{{ item.quantity }}</span>
+              <span class="quantity-button add">+</span>
+            </span>
+          }
           <p class="price">
             {{ item.dish.price * item.quantity | currency }}
           </p>

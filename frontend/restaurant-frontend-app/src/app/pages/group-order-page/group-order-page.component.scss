@@ -1,0 +1,158 @@
+@use 'app/shared/styles/abstracts/colors' as color;
+
+.page {
+  box-sizing: border-box;
+  width: min(100% - 2rem, 960px);
+  min-height: calc(100vh - 7rem);
+  margin: 1.5rem auto;
+  padding: 2rem 2.5rem;
+  border-radius: 1.25rem;
+  background: color.$neutral-100;
+  box-shadow: 0 2px 14px color.$shadow;
+}
+
+.page-header {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid color.$green-150;
+}
+
+.title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  color: color.$neutral-900;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.status-badge {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: color.$neutral-200;
+  color: color.$neutral-700;
+  font-size: 0.75rem;
+}
+
+.metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 0;
+  padding: 0;
+  color: color.$neutral-700;
+  font-size: 0.875rem;
+  list-style: none;
+}
+
+.metadata li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metadata svg,
+.notice svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: color.$green-600;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.75;
+}
+
+.metadata address {
+  font-style: normal;
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid color.$orange-100;
+  border-radius: 0.6rem;
+  background: color.$orange-30;
+  color: color.$neutral-900;
+  font-size: 0.9rem;
+}
+
+.notice svg {
+  stroke: color.$neutral-600;
+}
+
+.notice p {
+  margin: 0;
+}
+
+.participants {
+  display: grid;
+  gap: 1.25rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.order-summary {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid color.$green-150;
+}
+
+.grand-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  color: color.$neutral-900;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.grand-total span:last-child {
+  color: color.$green-800;
+}
+
+.submit-button {
+  width: 100%;
+  min-height: 3.25rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: color.$green-gradient;
+  color: color.$neutral-0;
+  font: inherit;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: 100%;
+    min-height: calc(100vh - 4.5rem);
+    margin: 0;
+    padding: 1.25rem 1rem;
+    border-radius: 0;
+  }
+
+  .title-row {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .metadata {
+    gap: 0.75rem 1rem;
+  }
+
+  .grand-total {
+    font-size: 1.25rem;
+  }
+}

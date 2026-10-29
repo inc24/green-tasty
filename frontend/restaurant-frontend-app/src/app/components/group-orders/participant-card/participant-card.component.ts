@@ -6,6 +6,7 @@ import { CurrencyPipe } from '@angular/common';
 @Component({
   selector: 'app-participant-card',
   templateUrl: './participant-card.component.html',
+  styleUrl: './participant-card.component.scss',
   changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CurrencyPipe

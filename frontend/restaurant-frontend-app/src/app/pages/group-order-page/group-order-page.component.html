@@ -1,9 +1,68 @@
 <main class="page">
-  <h1>Group Pre-Order</h1>
+  <header class="page-header">
+    <div class="title-row">
+      <h1>Group Pre-Order</h1>
+      <span class="status-badge">Created New Pre-Order</span>
+    </div>
+    <ul class="metadata" aria-label="Group order details">
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        <address>{{ header().address }}</address>
+      </li>
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2" />
+          <path d="M16 3v4M8 3v4M3 11h18" />
+        </svg>
+        <time [attr.datetime]="header().startDateTime">{{ header().date }}</time>
+      </li>
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3 2" />
+        </svg>
+        <time [attr.datetime]="header().startDateTime">{{ header().startTime }}</time>
+        -
+        <time [attr.datetime]="header().endDateTime">{{ header().endTime }}</time>
+      </li>
+      <li>
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <span>{{ header().participantCount }} of {{ header().maxGuestCount }} guests</span>
+      </li>
+    </ul>
+  </header>
+
+  @if (submittedGuestNames().length) {
+    <aside class="notice">
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" />
+      </svg>
+      <p>
+        <strong>{{ submittedGuestNames().join(', ') }}</strong>
+        {{ submittedGuestNames().length === 1 ? 'has' : 'have' }}
+        submitted a pre-order
+        {{ submittedGuestNames().length === 1 ? 'and is' : 'and are' }}
+        waiting for you to submit.
+      </p>
+    </aside>
+  }
 
   <ul class="participants">
     @for (person of participants(); track person.id) {
       <li><app-participant-card [participant]="person" /></li>
     }
   </ul>
+
+  <footer class="order-summary">
+    <p class="grand-total">
+      <span>Grand Total</span>
+      <span>{{ grandTotal() | currency }}</span>
+    </p>
+    <button class="submit-button" type="button">Submit Pre-Order</button>
+  </footer>
 </main>

@@ -1,6 +1,5 @@
 @use 'app/shared/styles/abstracts/colors' as color;
 @use '../../shared/styles/card' as card;
-@use 'sass:color' as col;
 
 :host {
   display: block;
@@ -271,5 +270,16 @@
   .locations-section .location-cards {
     flex-direction: column;
     gap: 1rem;
+  }
+}
+
+.offer-form {
+  display: grid;
+  gap: 0.75rem;
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.75rem;
   }
 }

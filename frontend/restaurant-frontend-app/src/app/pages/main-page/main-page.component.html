@@ -63,3 +63,51 @@
 @if (showLoginModal()) {
   <app-login-modal (closed)="closeLogin()" />
 }
+
+@if (showWelcomeOffer()) {
+  <app-modal
+    [title]="offerSubmitted() ? 'Thanks for your interest!' : 'Get 5% off your first order'"
+    [width]="'480px'"
+    (closed)="closeWelcomeOffer()"
+  >
+    @if (offerSubmitted()) {
+      <div class="offer-feedback" role="status">
+        <p>Thanks for your interest in Green &amp; Tasty!</p>
+      </div>
+    } @else {
+      <div class="offer-content">
+        <p>Sign up with your email and get 5% off your first order.</p>
+        <form id="welcome-offer-form" class="offer-form" (submit)="submitWelcomeOffer($event)">
+          <label for="welcome-offer-email">Email address</label>
+          <input
+            id="welcome-offer-email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+        </form>
+      </div>
+    }
+    <div modal-actions class="offer-actions">
+      @if (offerSubmitted()) {
+        <button
+          type="button"
+          class="button button--primary button--extra-large"
+          (click)="closeWelcomeOffer()"
+        >
+          Close
+        </button>
+      } @else {
+        <button
+          type="submit"
+          form="welcome-offer-form"
+          class="button button--primary button--extra-large"
+        >
+          Sign up
+        </button>
+      }
+    </div>
+  </app-modal>
+}

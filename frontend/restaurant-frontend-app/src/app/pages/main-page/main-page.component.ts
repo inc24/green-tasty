@@ -1,6 +1,15 @@
-import { Component, ChangeDetectionStrategy, OnInit, inject, computed } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  DestroyRef,
+  OnInit,
+  inject,
+  computed,
+  signal,
+} from '@angular/core';
 import { RouterLink, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { DishListResponse } from '@app/models/dishes/dish-list-response.model';
 import { LocationResponse } from '@app/models/locations/location-response.model';
 import { LocationsService } from '@app/services/locations/locations.service';
@@ -17,17 +26,24 @@ import { FeedbackReservationResponseItem } from '@app/models/feedbacks/feedback-
 import { UsersService } from '@app/services/users/users.service';
 import { FeedbacksService } from '@app/services/feedbacks/feedbacks.service';
 
-import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map, startWith } from 'rxjs/operators';
 
 import { LoginModalComponent } from '@app/auth/components/login/login-modal/login-modal.component';
+import { ModalComponent } from '@app/shared/custom-components/modal/modal.component';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterLink, LocationCardComponent, FeedbackWindowComponent, LoginModalComponent, ],
+  imports: [
+    CommonModule,
+    RouterLink,
+    LocationCardComponent,
+    FeedbackWindowComponent,
+    LoginModalComponent,
+    ModalComponent,
+  ],
   changeDetection: ChangeDetectionStrategy.Eager,
   providers: [LocationsService, DishesService, ReservationService, UsersService, FeedbacksService],
 })
@@ -36,6 +52,8 @@ export class MainPageComponent implements OnInit {
   locations: LocationResponse[] = [];
 
   showFeedbackModal = false;
+  readonly showWelcomeOffer = signal(false);
+  readonly offerSubmitted = signal(false);
   selectedReservationCustomer!: ReservationCustomer;
   feedbackForUpdate: FeedbackReservationResponseItem | undefined;
   selectedTable = 0;
@@ -47,8 +65,8 @@ export class MainPageComponent implements OnInit {
   private readonly reservationsService = inject(ReservationService)
   private readonly userService = inject(UsersService);
   private readonly feedbackService = inject(FeedbacksService);
-
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   // signals-first determination of the current URL
   private readonly currentUrl = toSignal(
@@ -71,6 +89,13 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadPopularDishes();
     this.loadLocations();
+    this.updateWelcomeOffer(this.router.url);
+    this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe((event) => this.updateWelcomeOffer(event.urlAfterRedirects));
 
     this.route.queryParams.subscribe((params) => {
       const reservationId = params['reservationId'];
@@ -79,6 +104,23 @@ export class MainPageComponent implements OnInit {
         this.loadReservationForFeedback(reservationId);
       }
     });
+  }
+
+  closeWelcomeOffer(): void {
+    this.showWelcomeOffer.set(false);
+  }
+
+  submitWelcomeOffer(event: SubmitEvent): void {
+    event.preventDefault();
+    this.offerSubmitted.set(true);
+  }
+
+  private updateWelcomeOffer(url: string): void {
+    const isMainPage = url.split(/[?#]/, 1)[0] === '/main';
+    this.showWelcomeOffer.set(isMainPage);
+    if (isMainPage) {
+      this.offerSubmitted.set(false);
+    }
   }
 
   loadPopularDishes(): void {
